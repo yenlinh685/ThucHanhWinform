@@ -1,0 +1,89 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
+namespace Bai4
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void ExitBtn_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void UpdateItemBtn_Click(object sender, EventArgs e)
+        {
+            List<Control> fieldList = new List<Control>()
+            {
+                StudentCodetxb,
+                StudentFullNametxb,
+                StudentAddresstxb,
+                Studentdtp,
+                StudentClasscbb
+            };
+
+            bool isValid = true;
+            foreach (Control field in fieldList)
+            {
+                if (field.Text == "")
+                {
+                    isValid = false;
+                    MessageBox.Show("Vui lòng nhập đầy đủ các trường", "Cảnh báo");
+                    break;
+                }
+            }
+
+            if (isValid)
+            {
+                ListViewItem item = new ListViewItem(StudentCodetxb.Text);
+
+                item.SubItems.Add(StudentFullNametxb.Text);
+                item.SubItems.Add(StudentAddresstxb.Text);
+                item.SubItems.Add(Studentdtp.Text);
+                item.SubItems.Add(StudentClasscbb.Text);
+
+                item.ImageIndex = 0;
+
+                StudentClasscbb.Items.Add(StudentClasscbb.Text);
+
+                StudentListlv.Items.Add(item);
+            }
+        }
+
+        private void addItemBtn_Click(object sender, EventArgs e)
+        {
+
+            List<Control> fieldList = new List<Control>()
+            {
+                StudentCodetxb,
+                StudentFullNametxb,
+                StudentAddresstxb,
+                Studentdtp,
+                StudentClasscbb
+            };
+
+            foreach (Control field in fieldList)
+            {
+                field.Text = "";    
+            }
+        }
+
+        private void StudentListlv_Click(object sender, EventArgs e)
+        {
+            var firstSelectedItem = listView1.SelectedItems[0];
+
+        }
+    }
+}

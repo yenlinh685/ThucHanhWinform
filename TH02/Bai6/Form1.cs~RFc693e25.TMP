@@ -1,0 +1,106 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
+
+namespace Bai6
+{
+    public partial class Form1 : Form
+    {
+        // Dữ liệu mẫu
+        private Dictionary<string, List<string>> dictionary = new Dictionary<string, List<string>>()
+        {
+            {
+                "THTH5A", new List<string>()
+                {
+                    "Nguyen Van Tuan",
+                    "Nguyen Thi Lan",
+                    "Nguyen Van Luong"
+                }
+            },
+            {
+                "THTH5B", new List<string>()
+                {
+                    "Le Nghiep",
+                    "Tran Long",
+                    "Ly Hai"
+                }
+            },
+            {
+                "THTH5C", new List<string>()
+                {
+                    "Le Trung",
+                    "Ton Thi Mai",
+                    "Tran Minh"
+                }
+            },
+        };
+
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            KhoaTreeView.Nodes.Add("Khoa tin hoc");
+
+            // Thêm học sinh vào tree
+            foreach (KeyValuePair<string, List<string>> item in dictionary)
+            {
+                TreeNode node = new TreeNode(item.Key); // Thêm lớp học
+
+                foreach (string studentName in item.Value)
+                {
+                    node.Nodes.Add(studentName); // Thêm sinh viên vào lớp
+                }
+                KhoaTreeView.Nodes[0].Nodes.Add(node); // Thêm lớp vào Khoa
+            }
+            KhoaTreeView.ExpandAll();
+
+            KhoaTreeView.NodeMouseClick += TreeView_NodeMouseClick;
+        }
+
+        private void TreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            // Xóa dữ liệu cũ trong ListView
+            StudentLV.Items.Clear();
+
+            // Đổ dữ liệu của node được click vào ListView
+            PopulateListViewFromTreeView(e.Node, StudentLV);
+        }
+
+        private void PopulateListViewFromTreeView(TreeNode node, ListView listView)
+        {
+            // Tạo một ListViewItem từ node hiện tại
+            ListViewItem item = new ListViewItem(node.Text); // Sinh viên
+
+            // Thêm vào ListView
+            listView.Items.Add(item);
+
+            // Duyệt các node con (nếu có) bằng đệ quy
+            foreach (TreeNode childNode in node.Nodes)
+            {
+                PopulateListViewFromTreeView(childNode, listView);
+            }
+        }
+
+        // Sự kiện khi nhấn nút "Cấp Khoa"
+        private void CapKhoaButton_Click(object sender, EventArgs e)
+        {
+            // Xóa dữ liệu cũ trong ListView
+            StudentLV.Items.Clear();
+
+            // Duyệt qua tất cả các lớp trong Khoa và thêm sinh viên vào ListView
+            foreach (TreeNode classNode in KhoaTreeView.Nodes[0].Nodes)
+            {
+                foreach (TreeNode studentNode in classNode.Nodes)
+                {
+                    // Tạo một ListViewItem cho mỗi sinh viên và thêm tên lớp vào cột thứ 2
+                    ListViewItem item = new ListViewItem(studentNode.Text);  // Tên sinh viên
+                    item.SubItems.Add(classNode.Text);  // Tên lớp
+                    StudentLV.Items.Add(item);
+                }
+            }
+        }
+    }
+}

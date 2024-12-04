@@ -1,0 +1,51 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Bai4
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void ExitBtn_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void UpdateItemBtn_Click(object sender, EventArgs e)
+        {
+            List<Control> fieldList = new List<Control>()
+            {
+                StudentCodetxb,
+                StudentFullNametxb,
+                StudentAddresstxb,
+                Studentdtp,
+                StudentClasstxb
+            };
+
+            bool isValid = true;
+            foreach(Control field in fieldList)
+            {
+                if (field.Text == "")
+                {
+                    isValid = false;
+                }
+            }
+        }
+
+        private void addItemBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
+}

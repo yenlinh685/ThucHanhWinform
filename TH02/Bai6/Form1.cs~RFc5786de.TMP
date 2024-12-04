@@ -1,0 +1,83 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
+
+namespace Bai6
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            KhoaTreeView.Nodes.Add("Khoa tin hoc");
+
+            Dictionary<string, List<string>> dictionary = new Dictionary<string, List<string>>()
+            {
+                {
+                    "THTH5A", new List<string>()
+                    {
+                        "Nguyen Van Tuan",
+                        "Nguyen Thi Lan",
+                        "Nguyen Van Luong"
+                    }
+                },
+                {
+                    "THTH5B", new List<string>()
+                    {
+                        "Le Nghiep",
+                        "Tran Long",
+                        "Ly Hai"
+                    }
+                },
+                {
+                    "THTH5C", new List<string>()
+                    {
+                        "Le Trung",
+                        "Ton Thi Mai",
+                        "Tran Minh"
+                    }
+                },
+            };
+
+            // Thêm học sinh vào tree
+            foreach (KeyValuePair<string, List<string>> item in dictionary)
+            {
+                TreeNode node = new TreeNode(item.Key);
+
+                foreach (string studentName in item.Value)
+                {
+                    node.Nodes.Add(studentName);
+                }
+                KhoaTreeView.Nodes[0].Nodes.Add(node);
+            }
+            KhoaTreeView.ExpandAll();
+
+            // Gọi duyệt 
+        }
+
+       
+
+        private void PopulateListViewFromTreeView(TreeNodeCollection nodes, ListView listView)
+        {
+            foreach (TreeNode node in nodes)
+            {
+                // Tạo một ListViewItem từ node
+                ListViewItem item = new ListViewItem(node.Text);
+
+                // Thêm vào ListView
+                listView.Items.Add(item);
+
+                // Nếu node hiện tại có con, duyệt tiếp các node con
+                if (node.Nodes.Count > 0)
+                {
+                    PopulateListViewFromTreeView(node.Nodes, listView); // Đệ quy
+                }
+            }
+        }
+
+    }
+}
